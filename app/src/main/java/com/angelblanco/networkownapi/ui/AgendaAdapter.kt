@@ -21,6 +21,8 @@ class AgendaAdapter(private val onClick:(Agenda)->Unit): ListAdapter<Agenda, Age
         with(holder.binding) {
             txtName.text = person.contacto
             txtTlf.text = person.telefono
+            idContact.text = person.id
+
         }
 
         holder.binding.root.setOnClickListener{
@@ -33,8 +35,8 @@ class AgendaAdapter(private val onClick:(Agenda)->Unit): ListAdapter<Agenda, Age
 
 object MessageItemCallback : DiffUtil.ItemCallback<Agenda>() {
     override fun areItemsTheSame(oldItem: Agenda, newItem: Agenda): Boolean =
-        oldItem.idContacto == newItem.idContacto
+        oldItem.id == newItem.id
 
     override fun areContentsTheSame(oldItem: Agenda, newItem: Agenda): Boolean =
-        oldItem.idContacto == newItem.idContacto
+        oldItem.id == newItem.id
 }

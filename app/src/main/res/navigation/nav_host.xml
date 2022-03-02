@@ -31,5 +31,8 @@
         <argument
             android:name="email"
             app:argType="string" />
+        <action
+            android:id="@+id/action_fragmentDetailContact_to_fragmentListAgenda"
+            app:destination="@id/fragmentListAgenda" />
     </fragment>
 </navigation>

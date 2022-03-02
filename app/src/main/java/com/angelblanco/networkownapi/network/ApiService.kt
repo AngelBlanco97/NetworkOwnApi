@@ -12,6 +12,6 @@ interface ApiService {
     @POST("contactos")
     fun addContacto(@Body contactoRequest: AgendaRequest):Call<Void>
 
-    @DELETE("contactos/{idContacto}")
+    @DELETE("deleteContacto/{idContacto}")
     fun deleteContacto(@Path("idContacto")id:String):Call<Void>
 }

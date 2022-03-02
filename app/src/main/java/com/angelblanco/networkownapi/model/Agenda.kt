@@ -1,7 +1,7 @@
 package com.angelblanco.networkownapi.model
 
 data class Agenda(
-    val idContacto: Int,
+    val id: String,
     val contacto: String?,
     val telefono: String?,
     val email: String?

@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-
 import com.angelblanco.networkownapi.databinding.FragmentDetailContactBinding
 import com.angelblanco.networkownapi.network.NetworkConfig
 import retrofit2.Call
@@ -27,7 +27,7 @@ class FragmentDetailContact : Fragment() {
     private var emailContact: String? = null
 
     private val adapter: AgendaAdapter = AgendaAdapter {
-        it.idContacto
+        it.id
         it.contacto
         it.telefono
         it.email
@@ -36,7 +36,7 @@ class FragmentDetailContact : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            idContact = it.getString("idContacto")
+            idContact = it.getString("id")
             nameContact = it.getString("name")
             tlfContact = it.getString("tlf")
             emailContact = it.getString("email")
@@ -63,29 +63,29 @@ class FragmentDetailContact : Fragment() {
         binding.txtDetailName.text = args.name
         binding.txtEmail.text = args.email
         binding.txtTelefono.text = args.telf
+        binding.txtId.text = args.idContacto
 
         binding.btnBorrarContacto.setOnClickListener{
 
-            //FALTA IMPLEMENTAR EL BORRADO DE USUARIO.
+            NetworkConfig.service
+                .deleteContacto(args.idContacto)
+                .enqueue(object : Callback<Void> {
+                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                        if (response.isSuccessful) {
+                            Toast.makeText(context,"Deleted contact", Toast.LENGTH_SHORT).show()
+                            val action = FragmentDetailContactDirections.actionFragmentDetailContactToFragmentListAgenda()
+                            findNavController().navigate(action)
+                        }else{
+                            Toast.makeText(context,"Can't delete contact. Please try again.",
+                                Toast.LENGTH_SHORT).show()
+                        }
+                    }
 
+                    override fun onFailure(call: Call<Void>, t: Throwable) {
+                        Toast.makeText(context,"Error deleting message",Toast.LENGTH_SHORT).show()
+                    }
 
-//            NetworkConfig.service
-//                .deleteContacto(args.idContacto)
-//                .enqueue(object : Callback<Void> {
-//                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
-//                        if (response.isSuccessful) {
-//                            Toast.makeText(context,"Deleted contact", Toast.LENGTH_SHORT).show()
-//                        }else{
-//                            Toast.makeText(context,"Can't delete contact. Please try again.",
-//                                Toast.LENGTH_SHORT).show()
-//                        }
-//                    }
-//
-//                    override fun onFailure(call: Call<Void>, t: Throwable) {
-//                        Toast.makeText(context,"Error deleting message",Toast.LENGTH_SHORT).show()
-//                    }
-//
-//                })
+                })
         }
 
     }

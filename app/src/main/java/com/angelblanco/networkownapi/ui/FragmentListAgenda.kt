@@ -1,7 +1,6 @@
 package com.angelblanco.networkownapi.ui
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -25,7 +24,7 @@ class FragmentListAgenda : Fragment() {
     get() = _binding!!
     private val adapter: AgendaAdapter = AgendaAdapter {
         val action = FragmentListAgendaDirections.actionFragmentListAgendaToFragmentDetailContact(
-            it.idContacto.toString(),
+            it.id,
             it.contacto.toString(),
             it.telefono.toString(),
             it.email.toString()
@@ -62,7 +61,6 @@ class FragmentListAgenda : Fragment() {
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (response.isSuccessful){
                         adapter.notifyDataSetChanged()
-                        getContactos()
                         et_Name.setText("")
                         et_Email.setText("")
                         et_Telf.setText("")
@@ -80,6 +78,8 @@ class FragmentListAgenda : Fragment() {
 
 
     }
+
+
 
     private fun getContactos() {
         NetworkConfig.service.getContactos().enqueue(object : Callback<List<AgendaResponse>>{
